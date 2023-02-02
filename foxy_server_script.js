@@ -17,44 +17,53 @@ onEvent('recipes', event => {
 //Set of fixes to item tags that will help them be compatible and interactabible with other mods
 onEvent('item.tags', tagfixes => {
 	
-	//Allows stripped logs from Better End mod to be used with Create
-	tagfixes.add('c:stripped_logs', 'betterend:mossy_glowshroom_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:pythadendron_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:end_lotus_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:end_lotus_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:lacugrove_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:dragon_tree_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:tenanea_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:helix_tree_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:umbrella_tree_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:jellyshroom_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betterend:lucernia_stripped_log')
-
-	
-	//Allows stripped logs from Better Nether mod to be used with Create
-	tagfixes.add('c:stripped_logs', 'betternether:stalagnate_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:willow_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:rubeus_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:wart_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:mushroom_fir_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:anchor_tree_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:stalagnate_stripped_log')
-	tagfixes.add('c:stripped_logs', 'betternether:nether_sakura_stripped_log')
+	/*Allows stripped logs from Better End mod to be used with Create
+	Formerly held the following item ids prior to regex
+	betterend:mossy_glowshroom_stripped_log
+	betterend:pythadendron_stripped_log
+	betterend:end_lotus_stripped_log
+	betterend:end_lotus_stripped_log
+	betterend:lacugrove_stripped_log
+	betterend:dragon_tree_stripped_log
+	betterend:tenanea_stripped_log
+	betterend:helix_tree_stripped_log
+	betterend:umbrella_tree_stripped_log
+	betterend:jellyshroom_stripped_log
+	betterend:lucernia_stripped_log*/
+	tagfixes.add('c:stripped_logs', /betterend:.+_stripped_log/)
 	
 	
-	//Allows stripped logs from Bewitchment mod to be used with Create
-	tagfixes.add('c:stripped_logs', 'bewitchment:stripped_juniper_log')
-	tagfixes.add('c:stripped_logs', 'bewitchment:stripped_cypress_log')
-	tagfixes.add('c:stripped_logs', 'bewitchment:stripped_elder_log')
-	tagfixes.add('c:stripped_logs', 'bewitchment:stripped_dragons_blood_log')
+	/*Allows stripped logs from Better Nether mod to be used with Create
+	Formerly held the following item ids prior to regex
+	betternether:stalagnate_stripped_log
+	betternether:willow_stripped_log
+	betternether:rubeus_stripped_log
+	betternether:wart_stripped_log
+	betternether:mushroom_fir_stripped_log
+	betternether:anchor_tree_stripped_log
+	betternether:stalagnate_stripped_log
+	betternether:nether_sakura_stripped_log*/
+	tagfixes.add('c:stripped_logs', /betternether:.+_stripped_log/)
+	
+	
+	/*Allows stripped logs from Bewitchment mod to be used with Create
+	Formerly held the following item ids prior to regex
+	bewitchment:stripped_juniper_log
+	bewitchment:stripped_cypress_log
+	bewitchment:stripped_elder_log
+	bewitchment:stripped_dragons_blood_log*/
+	tagfixes.add('c:stripped_logs', /bewitchment:stripped.+_log/)
 	tagfixes.add('c:stripped_logs', 'bwplus:stripped_yew_log')
 	
 	
-	//Allows stripped logs from Charm mod to be used with Create
-	tagfixes.add('c:stripped_logs', 'charm:stripped_azalea_log')
-	tagfixes.add('c:stripped_logs', 'charm:stripped_azalea_wood')
-	tagfixes.add('c:stripped_logs', 'charm:stripped_ebony_log')
-	tagfixes.add('c:stripped_logs', 'charm:stripped_ebony_wood')
+	/*Allows stripped logs from Charm mod to be used with Create
+	Formerly held the following item ids prior to regex
+	charm:stripped_azalea_log
+	charm:stripped_azalea_wood
+	charm:stripped_ebony_log
+	charm:stripped_ebony_wood
+	*/
+	tagfixes.add('c:stripped_logs', /charm:stripped.+(_log|_wood)/)
 	
 	
 	
