@@ -64,13 +64,6 @@ onEvent('item.tags', tagfixes => {
 	charm:stripped_ebony_wood
 	*/
 	tagfixes.add('c:stripped_logs', /charm:stripped.+(_log|_wood)/)
-	
-	
-	
-	
-	
-	
-	
 		
 })
 
@@ -174,6 +167,12 @@ onEvent('recipes', recipefixes => {
 	], 'byg:raw_pendorite_block')
 	
 	recipefixes.remove({id:'createplus:byg/crushing/pendorite_ore'})
+	
+	recipefixes.remove({id:'things:hardening_catalyst'})
+	
+	recipefixes.remove({id:'fantasyorigins:traveler_stone'})
+	
+	recipefixes.remove({id:'genesis:orb_of_origin'})
 		
 	recipefixes.recipes.createCrushing([
 	'byg:raw_pendorite',
@@ -199,9 +198,58 @@ onEvent('recipes', recipefixes => {
 	], 'things:deepslate_gleaming_ore')
 	
 	
+	/*recipefixes.shapeless(Item.of('things:hardening_catalyst'), [
+    'BDS',
+    'NAN',
+    'VDO'
+  ], {
+    D: 'minecraft:dragon_egg',
+    B: 'bosses_of_mass_destruction:blazing_eye',
+	N: 'blockus:nether_stars_block',
+	O: 'bosses_of_mass_destruction:obsidian_heart',
+	A: Item.of('minecraft:enchanted_book').enchant('minecraft:unbreaking', 3),
+	V: 'bosses_of_mass_destruction:void_thorn',
+	S:	'bosses_of_mass_destruction:ancient_anima'
 	
+	
+  })*/
+	
+	/*recipefixes.shapeless(Item.of('things:hardening_catalyst'),
+	[
+		'minecraft:dragon_egg',
+		'bosses_of_mass_destruction:blazing_eye',
+		'blockus:nether_stars_block',
+		'bosses_of_mass_destruction:obsidian_heart',
+		Item.of('minecraft:enchanted_book').enchant('minecraft:unbreaking', 3),
+		'bosses_of_mass_destruction:void_thorn',
+		'bosses_of_mass_destruction:ancient_anima'
+	
+	]
+  )
+	*/
+	
+	recipefixes.recipes.createMechanicalCrafting('things:hardening_catalyst', [
+    'BDS',
+    'NAN',
+    'VDO'
+  ], {
+    D: 'minecraft:dragon_egg',
+    B: 'bosses_of_mass_destruction:blazing_eye',
+	N: 'blockus:nether_stars_block',
+	O: 'bosses_of_mass_destruction:obsidian_heart',
+	A: Item.of('minecraft:enchanted_book').enchant('minecraft:unbreaking', 3),
+	V: 'bosses_of_mass_destruction:void_thorn',
+	S:	'bosses_of_mass_destruction:ancient_anima'
+	
+	
+  })
+  
+        
 	
 })
+
+
+
 
 
 
