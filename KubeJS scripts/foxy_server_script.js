@@ -314,21 +314,24 @@ onEvent("item.right_click", (event) => {
 		event.server.tell(Text.green('right click detected'))
 		event.server.scheduleInTicks(10, event.player, (callback) => {
 		callback.server.tell(Text.green('callback'))
-		createFlame(event)
+		createFlame(event, `minecraft:trident`)
 		})
 		
 	}
 	
 })
 
-function createFlame(event) {
-	//let player = event.getPlayer()
+function createFlame(event, hardItem) {
+	
 	let player = event.player
 	let recursionItem = event.item.id
+	//const hardItem
+	event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))
 	if(recursionItem != 'minecraft:trident') return
-	event.server.tell(Text.green('Aurora ' + rec + ' ' + player.x + ' ' + player.y + ' ' + player.z))
+	event.server.tell(Text.green('Player position' + recursionItem + ' ' + player.x + ' ' + player.y + ' ' + player.z))
+	event.server.runCommand(`/particle minecraft:soul_fire_flame ` + Math.floor(player.x) + ' ' + Math.floor(player.y) + ' ' + player.z + `0.5 0.5 0.5 0.09 200`)
 	event.server.scheduleInTicks(20, event.player, (callback) => {
-		createFlame(event)
+		createFlame(event, hardItem)
 	})
 	
 	
