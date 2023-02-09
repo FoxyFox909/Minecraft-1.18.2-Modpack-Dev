@@ -281,11 +281,17 @@ function randomizeSpawn(minSpawnRange, maxSpawnRange) {
 	
 	const {block, player, level, item} = event	
 	let recursionItem = event.getBlock().entityData
-	//const hardItem
-	//event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))
-	event.server.tell(Text.green('Step one'))
-	event.server.scheduleInTicks(1, event.server, (callback) => {
 	
+	//const hardItem
+	///event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))
+	if (recursionItem == hardItem)	{
+		event.server.tell(Text.green('yep they\'re equal'))
+	}
+	event.server.tell(Text.green('Step one'))
+	if(recursionItem != hardItem) return
+	event.server.tell(Text.green('passed guard'))
+	event.server.scheduleInTicks(5, event.server, (callback) => {
+		
 		if(recursionItem != hardItem) return
 		event.server.tell(Text.green('success'))
 		event.server.runCommandSilent(`/particle minecraft:soul_fire_flame ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 0.5 0.5 0.5 0.09 200 force @a`)
@@ -321,26 +327,20 @@ onEvent('block.place', event => {
 		extracts its NBT pattern data to match with switch cases
 		and trigger the appropriate loop, which stops running
 		when the banner is broken*/		
-		event.server.scheduleInTicks(1, callback => {
-			
-			let bannerNBT = event.getBlock().entityData
-			//event.server.tell(Text.green(bannerNBT))
-			let rawBannerNBT = String(bannerNBT)		
-			//event.server.tell(Text.green(rawBannerNBT))
-			let matchedNBT = rawBannerNBT.match(/Patterns:.+id/)			
-			//event.server.tell(Text.green(matchedNBT))
-			let bannerPattern = matchedNBT[0]
-			//event.server.tell(Text.green(bannerPattern))
-			bannerPattern = bannerPattern.substring(0,bannerPattern.length-3)
-			//event.server.tell(Text.green(bannerPattern))
+		event.server.scheduleInTicks(1, callback => {			
+			let bannerNBT = event.getBlock().entityData			
+			let rawBannerNBT = String(bannerNBT)					
+			let matchedNBT = rawBannerNBT.match(/Patterns:.+id/)						
+			let bannerPattern = matchedNBT[0]			
+			bannerPattern = bannerPattern.substring(0,bannerPattern.length-3)			
 			//event.server.tell(Text.green('Cleaned up the string boss ' + bannerPattern))
 			
 			switch (bannerPattern) {
 				case pillagerBanner:
 			//event.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
 			//event.server.runCommand('/summon fox ' + (block.x+randomPos) + ' ' + block.y + ' ' + block.z)
-			let hardItem = event.getBlock().entityData
-			createFlame(event, hardItem, 0, 5, 'pillager', 0.1)
+			let hardItem = event.getBlock().entityData			
+			createFlame(event, String(hardItem), 0, 5, 'pillager', 0.1)
 			break
 			
 			
