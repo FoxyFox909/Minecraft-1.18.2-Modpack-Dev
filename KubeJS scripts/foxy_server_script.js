@@ -267,24 +267,47 @@ onEvent('recipes', recipefixes => {
 */
 
 
+const minSpawnRange = 0
+const maxSpawnRange = 5
+
+//RNGESUS TAKE THE WHEEL
+function randomizeSpawn(minSpawnRange, maxSpawnRange) {
+    posMath = Math.floor(Math.random() * maxSpawnRange + minSpawnRange)
+    randomPos = (Math.round(Math.random()) * 2 - 1) * posMath   
+  	return randomPos
+ }
+ 
+ function createFlame(event, hardItem, minSpawnRange, maxSpawnRange, mob, chance) {
+	
+	const {block, player, level, item} = event	
+	let recursionItem = event.getBlock().entityData
+	//const hardItem
+	//event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))
+	event.server.tell(Text.green('Step one'))
+	event.server.scheduleInTicks(1, event.server, (callback) => {
+	
+		if(recursionItem != hardItem) return
+		event.server.tell(Text.green('success'))
+		event.server.runCommandSilent(`/particle minecraft:soul_fire_flame ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 0.5 0.5 0.5 0.09 200 force @a`)
+		event.server.scheduleInTicks(20, event.server, (callback) => {
+			createFlame(event, hardItem, minSpawnRange, maxSpawnRange, mob, chance)
+		})
+	})
+}
+
 
 onEvent('block.place', event => {
+	const {block, player, level, item} = event	
 	
 	
-	const {block, player, level, item} = event
+	//List of registered banners for spawning
+	const pillagerBanner = 'Patterns:[{Color:9,Pattern:"mr"},{Color:8,Pattern:"bs"},{Color:7,Pattern:"cs"},{Color:8,Pattern:"bo"},{Color:15,Pattern:"ms"},{Color:8,Pattern:"hh"},{Color:8,Pattern:"mc"},{Color:15,Pattern:"bo"}]'
 	
 	
-	
-	
-    
-   	
-			
-	//'{CustomName:\'{"color":"gold","translate":"block.minecraft.ominous_banner"}\',Patterns:[{Color:9,Pattern:"mr"},{Color:8,Pattern:"bs"},{Color:7,Pattern:"cs"},{Color:8,Pattern:"bo"},{Color:15,Pattern:"ms"},{Color:8,Pattern:"hh"},{Color:8,Pattern:"mc"},{Color:15,Pattern:"bo"}],id:"minecraft:banner",x:301,y:-60,z:81}'
 	
 	if (/minecraft:.+_banner/.test(block.id) == true){
 
-		//const minSpawnRange = 0
-		//const maxSpawnRange = 5
+		
 		/*let randomSpawnPos = generateRandomCoord;
 		
 		const generateRandomCoord = () => {
@@ -310,12 +333,14 @@ onEvent('block.place', event => {
 			//event.server.tell(Text.green(bannerPattern))
 			bannerPattern = bannerPattern.substring(0,bannerPattern.length-3)
 			//event.server.tell(Text.green(bannerPattern))
-			event.server.tell(Text.green('Cleaned up the string boss ' + bannerPattern))
+			//event.server.tell(Text.green('Cleaned up the string boss ' + bannerPattern))
 			
 			switch (bannerPattern) {
-				case 'Patterns:[{Color:9,Pattern:"mr"},{Color:8,Pattern:"bs"},{Color:7,Pattern:"cs"},{Color:8,Pattern:"bo"},{Color:15,Pattern:"ms"},{Color:8,Pattern:"hh"},{Color:8,Pattern:"mc"},{Color:15,Pattern:"bo"}]':
+				case pillagerBanner:
 			//event.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
-			event.server.runCommand(`/summon fox 97.54 -60.00 162.60`)
+			//event.server.runCommand('/summon fox ' + (block.x+randomPos) + ' ' + block.y + ' ' + block.z)
+			let hardItem = event.getBlock().entityData
+			createFlame(event, hardItem, 0, 5, 'pillager', 0.1)
 			break
 			
 			
@@ -331,6 +356,8 @@ onEvent('block.place', event => {
 	
 	
 })
+
+
 
 
 						/*event.server.scheduleInTicks(1, callback => {
@@ -366,7 +393,8 @@ onEvent("item.right_click", (event) => {
 	
 })
 
-function createFlame(event, hardItem) {
+/*	BIG BRAIN FUNCTION
+	function createFlame(event, hardItem) {
 	
 	let player = event.player
 	let recursionItem = event.item.id
@@ -379,12 +407,8 @@ function createFlame(event, hardItem) {
 		createFlame(event, hardItem)
 	})
 	
-	
-	//event.server.tell(Text.blue('player.x + ' ' + player.y + ' ' + player.z'))
-	//event.server.runCommand('/summon fox ' + player.x + ' ' + player.y + ' ' + player.z)
-	//event.server.tell(Text.green('dear lord'))
 }
-
+*/
 
 onEvent('player.chat', (event) => {
 	if (event.message.trim().equalsIgnoreCase('fox')) {
@@ -392,7 +416,7 @@ onEvent('player.chat', (event) => {
 	}
 })
 
-
+/*
 onEvent('item.entity_interact', event => {
   	if (event.item.id != "minecraft:bucket" || event.target.type != "minecraft:goat") return
     Utils.server.tell("Is a Goat and is Holding a Bucket")
@@ -400,3 +424,4 @@ onEvent('item.entity_interact', event => {
 	event.player.giveInHand('minecraft:milk_bucket')
 	event.target.playSound('entity.cow.milk')
 })
+*/
