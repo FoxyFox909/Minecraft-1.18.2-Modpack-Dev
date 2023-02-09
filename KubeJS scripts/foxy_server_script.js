@@ -251,9 +251,104 @@ onEvent('recipes', recipefixes => {
 
 
 
+/*BlockEvents.rightClicked((event) => {
+    const { block, item } = event
+
+    // Test if item is a spawn egg
+    if (!RegExp(/_spawn_egg/).test(item.id)) {
+        return
+    }
+
+    // Check if block is a mob spawner
+    if (block.id !== "minecraft:spawner") {
+        event.cancel() // Prevent mob from spawning
+    }
+})
+*/
+
+onEvent('block.place', bs => {
+    const {block, player, level, item} = bs
+    const placeBlock = 'minecraft:cobblestone'
+	const min = 0
+	const max = 5
+	
+	const generateRandomCoord = () => {
+		let random = Math.floor(Math.random()*max);
+		if(Math.round(Math.random())) {
+			random = random*-1;
+		}
+		return random;
+	};
+	
+	let randomSpawnPos = generateRandomCoord;
+	
+	
 
 
 
 
 
+		// Check if the placed block is Cobblestone
+    if (block.id == placeBlock) {
+        //const {x, y, z} = block
+        //const checkBlock = 'minecraft:dirt'
+        //check if the block below Cobblestone is Dirt
+        //if (level.getBlock(x,y-1,z) != checkBlock){
+        //   event.cancel()
+        // player.inventory.markDirty()
+		
+        
+		  bs.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
+		  console.log('Luciri2 /summon fox ' + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
+		}
+    
+})
 
+
+//randomTick
+
+
+
+onEvent("item.right_click", (event) => {
+	if(event.item.id == "minecraft:trident"){
+		event.server.tell(Text.green('right click detected'))
+		event.server.scheduleInTicks(10, event.player, (callback) => {
+		callback.server.tell(Text.green('callback'))
+		createFlame(event)
+		})
+		
+	}
+	
+})
+
+function createFlame(event) {
+	//let player = event.getPlayer()
+	let player = event.player
+	let recursionItem = event.item.id
+	if(recursionItem != 'minecraft:trident') return
+	event.server.tell(Text.green('Aurora ' + rec + ' ' + player.x + ' ' + player.y + ' ' + player.z))
+	event.server.scheduleInTicks(20, event.player, (callback) => {
+		createFlame(event)
+	})
+	
+	
+	//event.server.tell(Text.blue('player.x + ' ' + player.y + ' ' + player.z'))
+	//event.server.runCommand('/summon fox ' + player.x + ' ' + player.y + ' ' + player.z)
+	//event.server.tell(Text.green('dear lord'))
+}
+
+
+onEvent('player.chat', (event) => {
+	if (event.message.trim().equalsIgnoreCase('fox')) {
+	event.server.tell(Text.green('Kon Kon'))
+	}
+})
+
+
+onEvent('item.entity_interact', event => {
+  	if (event.item.id != "minecraft:bucket" || event.target.type != "minecraft:goat") return
+    Utils.server.tell("Is a Goat and is Holding a Bucket")
+	event.item.count--
+	event.player.giveInHand('minecraft:milk_bucket')
+	event.target.playSound('entity.cow.milk')
+})
