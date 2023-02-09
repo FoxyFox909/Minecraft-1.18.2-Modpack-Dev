@@ -271,31 +271,36 @@ const minSpawnRange = 0
 const maxSpawnRange = 5
 
 //RNGESUS TAKE THE WHEEL
-function randomizeSpawn(minSpawnRange, maxSpawnRange) {
+function randomizeSpawnPos(minSpawnRange, maxSpawnRange) {
     posMath = Math.floor(Math.random() * maxSpawnRange + minSpawnRange)
     randomPos = (Math.round(Math.random()) * 2 - 1) * posMath   
   	return randomPos
  }
  
+ function randomizeGeneral() {
+	let rngesus = Math.round(Math.random()*100)
+	return rngesus 
+}
+
+
  function createFlame(event, hardItem, minSpawnRange, maxSpawnRange, mob, chance) {
 	
 	const {block, player, level, item} = event	
 	let recursionItem = event.getBlock().entityData
 	
-	//const hardItem
-	///event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))
-	if (recursionItem == hardItem)	{
-		event.server.tell(Text.green('yep they\'re equal'))
-	}
-	event.server.tell(Text.green('Step one'))
-	if(recursionItem != hardItem) return
-	event.server.tell(Text.green('passed guard'))
+	
+	///event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))	
 	event.server.scheduleInTicks(5, event.server, (callback) => {
 		
 		if(recursionItem != hardItem) return
 		event.server.tell(Text.green('success'))
-		event.server.runCommandSilent(`/particle minecraft:soul_fire_flame ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 0.5 0.5 0.5 0.09 200 force @a`)
-		event.server.scheduleInTicks(20, event.server, (callback) => {
+		event.server.tell(Text.green(((randomizeGeneral()*3))))
+		event.server.runCommandSilent(`/particle minecraft:soul_fire_flame ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 0.3 0.81 0.3 0.09 64 force @a`)
+		if (randomizeGeneral() >= 90) {event.server.runCommandSilent(`/particle create:soul_base ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 0.05 0.05 0.05 0.01 1 force @a`)}
+		if (randomizeGeneral() >= 90) {event.server.runCommandSilent(`/particle create:soul ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 1 1 1 0.01 1 force @a`)}
+		if (randomizeGeneral() >= 98) {event.server.runCommandSilent(`/playsound bewitchment:entity.ghost.ambient block @p ` + block.x + ' ' + block.y + ' ' + block.z + ` 0.06 1 0.03`)}
+		if (randomizeGeneral() >= 95) {event.server.runCommandSilent(`/playsound create:haunted_bell_use block @p ` + block.x + ' ' + block.y + ' ' + block.z + ` 0.06 ` + (randomizeGeneral()/100) +` 0.03`)}
+		event.server.scheduleInTicks(15, event.server, (callback) => {
 			createFlame(event, hardItem, minSpawnRange, maxSpawnRange, mob, chance)
 		})
 	})
@@ -313,21 +318,12 @@ onEvent('block.place', event => {
 	
 	if (/minecraft:.+_banner/.test(block.id) == true){
 
-		
-		/*let randomSpawnPos = generateRandomCoord;
-		
-		const generateRandomCoord = () => {
-		let random = Math.floor(Math.random()*maxSpawnRange);
-		if(Math.round(Math.random())) {
-			random = random*-1;
-		}
-		return random;*/
-	//};
 		/*listens for the placement of a floor or wall banner then
 		extracts its NBT pattern data to match with switch cases
 		and trigger the appropriate loop, which stops running
 		when the banner is broken*/		
-		event.server.scheduleInTicks(1, callback => {			
+		event.server.scheduleInTicks(1, callback => {
+				
 			let bannerNBT = event.getBlock().entityData			
 			let rawBannerNBT = String(bannerNBT)					
 			let matchedNBT = rawBannerNBT.match(/Patterns:.+id/)						
@@ -337,8 +333,10 @@ onEvent('block.place', event => {
 			
 			switch (bannerPattern) {
 				case pillagerBanner:
-			//event.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
-			//event.server.runCommand('/summon fox ' + (block.x+randomPos) + ' ' + block.y + ' ' + block.z)
+			
+			
+			event.server.runCommandSilent(`/playsound create:haunted_bell_convert block @a ` + block.x + ' ' + block.y + ' ' + block.z + ` 0.60 ` + (randomizeGeneral()/100) +` 0.25`)
+			event.server.runCommandSilent(`/particle minecraft:soul_fire_flame ` + Math.floor(block.x) + ' ' + Math.floor(block.y) + ' ' + Math.floor(block.z) + ` 0.25 0.66 0.25 0.21 ` + (randomizeGeneral()*3) + ` force @a`)
 			let hardItem = event.getBlock().entityData			
 			createFlame(event, String(hardItem), 0, 5, 'pillager', 0.1)
 			break
@@ -424,4 +422,4 @@ onEvent('item.entity_interact', event => {
 	event.player.giveInHand('minecraft:milk_bucket')
 	event.target.playSound('entity.cow.milk')
 })
-*/
+*///event.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
