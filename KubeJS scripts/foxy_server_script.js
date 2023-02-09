@@ -266,43 +266,88 @@ onEvent('recipes', recipefixes => {
 })
 */
 
-onEvent('block.place', bs => {
-    const {block, player, level, item} = bs
-    const placeBlock = 'minecraft:cobblestone'
-	const min = 0
-	const max = 5
+
+
+onEvent('block.place', event => {
 	
-	const generateRandomCoord = () => {
-		let random = Math.floor(Math.random()*max);
+	
+	const {block, player, level, item} = event
+	
+	
+	
+	
+    
+   	
+			
+	//'{CustomName:\'{"color":"gold","translate":"block.minecraft.ominous_banner"}\',Patterns:[{Color:9,Pattern:"mr"},{Color:8,Pattern:"bs"},{Color:7,Pattern:"cs"},{Color:8,Pattern:"bo"},{Color:15,Pattern:"ms"},{Color:8,Pattern:"hh"},{Color:8,Pattern:"mc"},{Color:15,Pattern:"bo"}],id:"minecraft:banner",x:301,y:-60,z:81}'
+	
+	if (/minecraft:.+_banner/.test(block.id) == true){
+
+		//const minSpawnRange = 0
+		//const maxSpawnRange = 5
+		/*let randomSpawnPos = generateRandomCoord;
+		
+		const generateRandomCoord = () => {
+		let random = Math.floor(Math.random()*maxSpawnRange);
 		if(Math.round(Math.random())) {
 			random = random*-1;
 		}
-		return random;
-	};
+		return random;*/
+	//};
+		/*listens for the placement of a floor or wall banner then
+		extracts its NBT pattern data to match with switch cases
+		and trigger the appropriate loop, which stops running
+		when the banner is broken*/		
+		event.server.scheduleInTicks(1, callback => {
+			
+			let bannerNBT = event.getBlock().entityData
+			//event.server.tell(Text.green(bannerNBT))
+			let rawBannerNBT = String(bannerNBT)		
+			//event.server.tell(Text.green(rawBannerNBT))
+			let matchedNBT = rawBannerNBT.match(/Patterns:.+id/)			
+			//event.server.tell(Text.green(matchedNBT))
+			let bannerPattern = matchedNBT[0]
+			//event.server.tell(Text.green(bannerPattern))
+			bannerPattern = bannerPattern.substring(0,bannerPattern.length-3)
+			//event.server.tell(Text.green(bannerPattern))
+			event.server.tell(Text.green('Cleaned up the string boss ' + bannerPattern))
+			
+			switch (bannerPattern) {
+				case 'Patterns:[{Color:9,Pattern:"mr"},{Color:8,Pattern:"bs"},{Color:7,Pattern:"cs"},{Color:8,Pattern:"bo"},{Color:15,Pattern:"ms"},{Color:8,Pattern:"hh"},{Color:8,Pattern:"mc"},{Color:15,Pattern:"bo"}]':
+			//event.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
+			event.server.runCommand(`/summon fox 97.54 -60.00 162.60`)
+			break
+			
+			
+			
+			}	
+		})
 	
-	let randomSpawnPos = generateRandomCoord;
+			
+			
+	}
 	
 	
+	
+	
+})
 
 
-
+						/*event.server.scheduleInTicks(1, callback => {
+						event.server.tell(Text.green(event.getBlock().entityData))
+				
+						})*/
 
 
 		// Check if the placed block is Cobblestone
-    if (block.id == placeBlock) {
-        //const {x, y, z} = block
-        //const checkBlock = 'minecraft:dirt'
-        //check if the block below Cobblestone is Dirt
-        //if (level.getBlock(x,y-1,z) != checkBlock){
-        //   event.cancel()
-        // player.inventory.markDirty()
-		
+    /* if (block.id == placeCobblestone) {
         
-		  bs.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
+        
+		  event.server.runCommand(`/summon fox ` + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
 		  console.log('Luciri2 /summon fox ' + (block.x+randomSpawnPos()) + ' ' + block.y + ' ' + (block.z+randomSpawnPos()))
 		}
-    
-})
+    */
+
 
 
 //randomTick
@@ -328,8 +373,8 @@ function createFlame(event, hardItem) {
 	//const hardItem
 	event.server.tell(Text.green('recursionItem is ' + recursionItem + ' and hardItem is ' + hardItem))
 	if(recursionItem != 'minecraft:trident') return
-	event.server.tell(Text.green('Player position' + recursionItem + ' ' + player.x + ' ' + player.y + ' ' + player.z))
-	event.server.runCommand(`/particle minecraft:soul_fire_flame ` + Math.floor(player.x) + ' ' + Math.floor(player.y) + ' ' + player.z + `0.5 0.5 0.5 0.09 200`)
+	event.server.tell(Text.green('Player position ' + Math.floor(player.x) + ' ' + Math.floor(player.y) + ' ' + Math.floor(player.z)))
+	event.server.runCommandSilent(`/particle minecraft:soul_fire_flame ` + Math.floor(player.x) + ' ' + Math.floor(player.y) + ' ' + Math.floor(player.z) + ` 0.5 0.5 0.5 0.09 200 force @a`)
 	event.server.scheduleInTicks(20, event.player, (callback) => {
 		createFlame(event, hardItem)
 	})
